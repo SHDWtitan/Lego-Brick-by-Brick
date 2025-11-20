@@ -1,0 +1,126 @@
+1. Final Project Overview
+Your final project is an end-to-end data exploration and visualization project. You will choose or collect a dataset, clean and analyze it using Python (e.g., Pandas/Numpy), and communicate meaningful findings through polished visualizations or use an interactive dashboard to let users explore the data.
+
+This project represents the culmination of the course's three core dimensions. Aim to deepen at least two, ideally all three, of these dimensions.:
+
+Data Collection & Processing
+Collect or select meaningful data. Clean, merge, transform, and prepare the dataset with Python.
+
+Analysis & Insights
+
+Ask focused questions and explore your dataset using methods such as:
+
+summary statistics, trends, distributions
+
+comparisons across groups or time
+
+correlations or relationships
+
+segmenting or filtering to reveal patterns
+
+Your goal is to move beyond description and provide meaningful and interpretable insights.
+
+Interactive Visualization / Storytelling
+
+Produce polished charts or build a simple interactive dashboard using:
+
+Altair (in notebook)
+
+Vega-Lite (HTML)
+
+Optional Flask backend to serve data
+
+2. Deliverables
+A. Final Notebook and/or Prototype + Code (20 pts)
+(Upload as a ZIP file — 20 pts)
+
+Your ZIP file must contain all files needed to reproduce your work. It should include:
+
+1. Jupyter Notebook (.ipynb)
+
+Full workflow from start to finish
+
+Data cleaning, preparation, analysis, and visualization steps
+
+Clear markdown explanations and commentary
+
+Code must run top-to-bottom without errors
+
+2. Dataset(s)
+
+Include one of the following:
+
+Cleaned CSV/JSON/XLSX files used in the final analysis
+
+OR a link to a public dataset (if not downloadable)
+
+If you collected or scraped data: include your data collection script(s)
+
+3. Visualizations or Dashboard Files
+
+Depending on your project format:
+
+If Notebook Report:
+
+All visualizations must be rendered inside the notebook
+
+If Interactive Dashboard:
+
+HTML file(s) and any required JS/CSS
+
+Vega-Lite spec files (if separate)
+
+Optional Flask app folder (if used)
+
+4. Supporting Scripts (if applicable)
+
+Data scraping/collection scripts
+
+Helper Python modules
+
+Any utility functions
+
+5. README (README.md)
+
+A short guide explaining:
+
+How to run your notebook or dashboard
+
+Any installation steps (minimal)
+
+Dataset sources
+
+Explanation of the folder/file structure
+
+B. Final Video Presentation (3-4 minutes) (5 pts)
+Submit an unlisted YouTube link to your recorded video (3–4 minutes) that summarizes:
+
+Your topic and motivation
+
+Your dataset and key processing steps
+
+Your main insights
+
+Your final visualizations or dashboard
+
+A screen recording with voiceover is sufficient.
+Submit the video link on Webcourses (just comment).
+
+ 
+
+3. Project Expectations
+Strong projects contribute across three areas:
+
+1. Data Collection & Processing
+(collect meaningful data, clean it, prepare it for analysis)
+
+2. Analysis & Insights
+(ask focused questions, uncover patterns, interpret results with care)
+
+3. Interactive Visualization
+(design interactions or visual storytelling that supports exploration and explanation)
+
+Aim to deepen at least two, ideally all three, of these dimensions.
+
+Academic Integrity:
+Your work must be your own. External code may be adapted with citation. Do not submit pre-made dashboards or AI-generated datasets without disclosure.
