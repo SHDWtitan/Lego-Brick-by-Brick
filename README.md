@@ -6,3 +6,5 @@ This Repo is for the purpose of hosing the base files and python code for the Da
 # The full data Lego file link
 https://raw.githubusercontent.com/SHDWtitan/COP4282_DSP_Final_Project_FALL2025/refs/heads/main/data/lego_sets.csv
 
+# Contributors
+Katerina Garkova - Visualization
