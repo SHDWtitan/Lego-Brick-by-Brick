@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/SHDWtitan/Lego-Brick-by-Brick/refs/heads/main/data/lego_cleaned.csv"
+  },
+  "transform": [
+    {"filter": "datum.subtheme != null && datum.subtheme != ''"}
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "subtheme", "type": "nominal", "title": "Subtheme"},
+    "y": {"aggregate": "count", "title": "Number of Lego Sets"},
+    "color": {"field": "subtheme", "type": "nominal", "legend": null}
+  },
+  "title": "Lego set Distribution by Subtheme",
+  "config": {}
+}

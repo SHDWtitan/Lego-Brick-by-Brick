@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/SHDWtitan/Lego-Brick-by-Brick/refs/heads/main/data/lego_cleaned.csv"
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "theme", "type": "nominal", "title": "Theme"},
+    "y": {"aggregate": "count", "title": "Number of Lego Sets"},
+    "color": {"field": "theme", "type": "nominal", "legend": null}
+  },
+  "title": "Lego set Distribution by Theme",
+  "config": {}
+}

@@ -1,0 +1,251 @@
+:root {
+    --red: rgb(201, 112, 100);
+    --darkgrey: rgb(50, 150, 93);
+}
+
+/* GLOBAL LAYOUT STYLES */
+
+body {
+    margin: 0;
+    color: white;
+    background-color: rgb(50, 150, 93);
+    box-sizing: border-box;
+    padding: 0 2rem;
+}
+
+p,
+li {
+    color: rgb(202, 202, 202);
+    /* font-size: .9rem; */
+    line-height: 1.5rem;
+}
+
+h3 {
+    line-height: 1.7rem;
+}
+
+.flex-div>.text-block {
+    width: 40%;
+}
+
+.title {
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.title-var1 {
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-block {
+    max-width: 60vw;
+    margin: 5rem auto;
+    /* margin-bottom: 2rem; */
+}
+
+.flex-graph {
+    display: flex;
+    min-width: 50vw;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Helvetica, Arial, sans-serif;
+
+}
+
+.full-graph-container {
+    overflow: hidden;
+    height: 90vh;
+    border: 1px rgb(50, 150, 93) solid;
+}
+
+.masked-out {
+    width: 100%;
+    height: 95vh;
+    /* padding-bottom: 2vh; */
+    border: 1px rgb(50, 150, 93) solid;
+}
+
+.full-graph {
+    margin: 0 auto;
+}
+
+.graph-div {
+    margin: 5em 0;
+
+}
+
+.insight-div {
+    display: grid;
+    gap: 2rem;
+    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
+    width: 60vw;
+    margin: 0 auto;
+}
+
+/* 
+.insights {
+    width: 30vw;
+} */
+
+.insights img {
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
+}
+
+.insight-img {
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Cover */
+
+#title-font {
+    font-size: 4rem;
+}
+
+#cover .title {
+    height: 100vh;
+}
+
+/* Chapter 2 */
+
+#pitch-volume-graph>.masked-out {
+    height: 97vh;
+}
+
+#lyric-chart {
+    width: 60vw;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#radar-grid {
+    display: grid;
+    gap: 4rem;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0 8rem;
+}
+
+.radar-container {
+    position: relative; /* Make the container a positioning reference */
+    text-align: center; /* Center the text (optional if you want centered headings) */
+}
+
+.radar-container img {
+    width: 100%; /* Ensure the image fits the container by default */
+    transition: transform 0.3s, width 1s, height 1s; /* Smooth scaling */
+}
+
+.radar-container img:hover {
+    border: 1px var(--darkgrey) solid;
+    width: 50vh;
+    height: 50vh;
+    position: absolute;
+    top: -25%;
+    right: -50%;
+    transform: translate(-50%, -50%); /* Center the enlarged image */
+    z-index: 100; /* Ensure it appears above other content */
+}
+
+.btn-accordian {
+    display: block;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    background-color: var(--darkgrey);
+    border: 0;
+    color: var(--red);
+    margin: 0 auto;
+    margin-top: 1rem;
+    /* text-align: center; */
+    width: 60vw;
+    transition: 0.4s;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.btn-accordian i {
+
+    margin-left: auto;
+
+}
+
+/*** popups  ***/
+
+.insight-content {
+    width: 55vw;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.insight-accordian {
+    width: 60vw;
+    margin: 0 auto;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    border: 1px var(--darkgrey) solid;
+    opacity: 0%;
+    border-radius: 5px;
+}
+
+.insight-div {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+}
+
+/* Chapter 3 */
+.tab {
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+}
+
+.tablinks {
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    color: var(--red);
+    border: 0;
+    background-color: rgb(50, 150, 93);
+}
+
+.tablinks:hover {
+    background-color: rgb(43, 43, 43);
+
+}
+
+.tablinks.active {
+    background-color: var(--red);
+    color: rgb(50, 150, 93);
+}
+
+.tab-container {
+    height: 80vh;
+    /* width: 30vw; */
+}
+
+.tab-mask {
+    height: 80vh;
+}
