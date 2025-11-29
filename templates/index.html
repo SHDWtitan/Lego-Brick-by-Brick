@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<!--FOR this you just need to include everything not already marked for testing-->
+<html>
+<head>
+    <title>Lego Brick by Brick</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <style>
+        /* Center charts */
+        .chart-container {
+            text-align: center;   
+            margin-top: 20px;     
+        }
+
+        .chart {
+            display: block; 
+            text-align: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Preview table */
+        #preview {
+            margin: 20px auto;
+            width: 80%;
+            text-align: left;
+            font-family: monospace;
+        }
+    </style>
+    <style>
+        .data_table {
+            font-family: monospace;
+            line-height: 1.2;       
+            letter-spacing: 1px;    
+            margin: 20px auto;
+            text-align: center;
+            justify-content: center;
+        }
+        .pagination-bar {
+            width: 100%;
+            display: flex;
+            justify-content: center;   /* ✅ horizontal centering */
+            align-items: center;
+            gap: 10px;                 /* ✅ spacing between items */
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lego Brick by Brick</h1>
+    <h4>By Hunter Layfield</h4>
+    <h4>
+        Explore Lego sets by year, price, pieces, and themes. dff
+    </h4>   
+
+    <!-- Begin display for Page -->
+
+    <div class="chart-container">
+        <div id="vis1" class="chart"></div>
+    </div>
+
+    <div class = "pagination-bar">
+        <h2>Search Lego sets by Theme / Sub-Theme / Category / Mini-Figs / Theme Group / Retail Price ($) / Year</h2>
+    </div>
+
+    <div class = "pagination-bar">
+        <div style="margin-bottom: 10px;">
+            <label>Theme:</label>
+            <select id="themeSelect"><option value="">All</option></select>
+            <label>Year:</label>
+            <select id="yearSelect"><option value="">All</option> </select>
+            <label>Reatil Price (US$)</label>
+            <select id="US_retailPriceSelect"><option value="">All</option></select>
+            <label>Sub-Theme</label>
+            <select id="subthemeSelect"><option value="">All</option></select>
+            <label>Category</label>
+            <select id="categorySelect"><option value="">All</option></select>
+            <label>Mini-Figures</label>
+            <select id="minifigsSelect"><option value="">All</option></select>
+            <label>Theme Group</label>
+            <select id="themeGroupSelect"><option value="">All</option></select>
+
+
+        <button onclick="applyFilters()">Apply Filters</button>
+        </div>
+    </div>
+
+
+    <div class="data_table">
+        <div id="vis4" class="chart"></div>
+    </div>
+    <div class = "pagination-bar">
+        <label>Page:</label>
+        <select id="pageSelect"></select>
+        <button onclick="changePage(-1)">Prev</button>
+        <button onclick="changePage(1)">Next</button>
+        <span id="matchCount">Total Sets: 0</span>
+    </div>
+
+
+    <div class="chart-container">
+        <div id="vis2" class="chart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="vis3" class="chart"></div>
+    </div>
+
+
+    <!-- TESTING Preview first 5 rows // TESTING  -->
+    <!--<div id="preview"></div> -->
+
+    <script>
+
+        function refreshPagination(url) {
+            currentDataURL = url;
+
+            fetch(url)
+                .then(resp => resp.json())
+                .then(data => {
+                    // Update the total sets count
+                    document.getElementById("matchCount").textContent = `Total sets: ${data.length}`;
+
+                    const rowsPerPage = 10;
+                    const totalPages = Math.ceil(data.length / rowsPerPage);
+
+                    const pageSelect = document.getElementById("pageSelect");
+                    pageSelect.innerHTML = "";
+
+                    for (let i = 1; i <= totalPages; i++) {
+                        const opt = document.createElement("option");
+                        opt.value = i;
+                        opt.textContent = i;
+                        pageSelect.appendChild(opt);
+                    }
+
+                    vegaEmbed("#vis4", { ...tableSpec, data: { url } }).then(result => {
+                        const view = result.view;
+                        pageSelect.addEventListener("change", () => {
+                            view.signal("Page", Number(pageSelect.value)).run();
+                        });
+                    });
+                });
+        }
+
+        let fullData = [];
+
+        fetch("/data")
+            .then(r => r.json())
+            .then(data => {
+                fullData = data;
+
+                // Helper function to populate a dropdown
+                function populateDropdown(selectId, values, sortNumbers = false) {
+                    const select = document.getElementById(selectId);
+                    const sortedValues = sortNumbers ? [...values].sort((a,b) => a - b) : [...values].sort();
+                    sortedValues.forEach(v => {
+                        if (v !== null && v !== undefined && v !== "") {
+                            const opt = document.createElement("option");
+                            opt.value = v;
+                            opt.textContent = v;
+                            select.appendChild(opt);
+                        }
+                    });
+                }
+
+                // Populate all dropdowns
+                populateDropdown("themeSelect", new Set(data.map(d => d.theme)));
+                populateDropdown("yearSelect", new Set(data.map(d => d.year)), true);
+                populateDropdown("subthemeSelect", new Set(data.map(d => d.subtheme)));
+                populateDropdown("categorySelect", new Set(data.map(d => d.category)));
+                populateDropdown("minifigsSelect", new Set(data.map(d => d.minifigs)), true);
+                populateDropdown("themeGroupSelect", new Set(data.map(d => d.themeGroup)));
+                populateDropdown("US_retailPriceSelect", new Set(data.map(d => d.US_retailPrice)), true);
+                populateDropdown("piecesSelect", new Set(data.map(d => d.pieces)), true);
+            });
+
+
+            function applyFilters() {
+                const theme = document.getElementById("themeSelect").value;
+                const year = document.getElementById("yearSelect").value;
+                const subtheme = document.getElementById("subthemeSelect").value;
+                const category = document.getElementById("categorySelect").value;
+                const pieces = document.getElementById("piecesSelect")?.value;
+                const minifigs = document.getElementById("minifigsSelect").value;
+                const themeGroup = document.getElementById("themeGroupSelect").value;
+                const US_retailPrice = document.getElementById("US_retailPriceSelect").value;
+
+                const params = new URLSearchParams();
+
+                if (theme) params.append("theme", theme);
+                if (year) params.append("year", year);
+                if (subtheme) params.append("subtheme", subtheme);
+                if (category) params.append("category", category);
+                if (pieces) params.append("pieces", pieces);
+                if (minifigs) params.append("minifigs", minifigs);
+                if (themeGroup) params.append("themeGroup", themeGroup);
+                if (US_retailPrice) params.append("US_retailPrice", US_retailPrice);
+
+                // Add timestamp to avoid caching issues
+                const url = "/data_filtered?" + params.toString() + "&_=" + Date.now();
+
+                refreshPagination(url);   
+            }
+
+    </script>
+    <script>
+        // TESTING Display first 5 rows from Flask /data endpoint
+        fetch("/data")
+            .then(resp => resp.json())
+            .then(data => {
+                document.getElementById("preview").innerHTML =
+                    "<h3>First 5 rows:</h3><pre>" +
+                    JSON.stringify(data.slice(0,5), null, 2) +
+                    "</pre>";
+            });
+        // TESTING
+
+
+        // ------------------------------
+        // Chart 1: Line chart (Average Price by Year)
+        // ------------------------------
+        const lineSpec1 = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 500,
+            "height": 300,
+            "transform": [
+                {
+                    "aggregate": [
+                        { "op": "mean", "field": "US_retailPrice", "as": "avg_price" }
+                    ],
+                    "groupby": ["year"]
+                }
+            ],
+            "mark": "line",
+            "encoding": {
+                "x": { "field": "year", "type": "ordinal" },
+                "y": { "field": "avg_price", "type": "quantitative", "title": "Average Price ($)" }
+            }
+        };
+        vegaEmbed('#vis1', lineSpec1)
+            .then(result => console.log("Line chart rendered"))
+            .catch(error => console.error(error));
+
+        // ------------------------------
+        // Chart 2: Scatter plot (Price vs Year)
+        // ------------------------------
+        const scatterSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 500,
+            "height": 300,
+            "mark": "point",
+            "encoding": {
+                "x": {
+                    "field": "year",
+                     "type": "quantitative",
+                    "scale": { "domain": [2000, 2016] }
+                },
+                "y": { "field": "US_retailPrice", "type": "quantitative" },
+                "tooltip": [
+                    {"field": "name", "type":"nominal"},
+                    {"field": "year", "type":"quantitative"},
+                    {"field": "US_retailPrice", "type":"quantitative"}
+                ]
+            }
+        };
+        vegaEmbed('#vis2', scatterSpec)
+            .then(result => console.log("Scatter plot rendered"))
+            .catch(error => console.error(error));
+
+        // ------------------------------
+        // Chart 3: Bar chart (sets by Year)
+        // ------------------------------
+        const lineSpec2 = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 500,
+            "height": 300,
+            "transform": [
+                {
+                "aggregate": [
+                    { "op": "count", "as": "sets_per_year" }
+                ],
+                "groupby": ["year"]
+                }
+            ],
+
+            "mark": "line",
+
+            "encoding": {
+                "x": {
+                "field": "year",
+                "type": "ordinal",
+                "title": "Year"
+                },
+                "y": {
+                "field": "sets_per_year",
+                "type": "quantitative",
+                "title": "Number of Sets Released"
+                }
+            }
+            };
+
+            vegaEmbed('#vis3', lineSpec2)
+            .then(result => console.log("Line chart rendered"))
+            .catch(error => console.error(error));
+
+            const columns = [
+                { label: "Set Name", field: "name", type: "nominal", width: 300 },
+                { label: "Theme", field: "theme", type: "nominal", width: 120 },
+                { label: "Year", field: "year", type: "quantitative", width: 70 },
+                { label: "Pieces", field: "pieces", type: "quantitative", width: 80 },
+                { label: "Price ($)", field: "US_retailPrice", type: "quantitative", width: 90 },
+                { label: "Set ID", field: "set_id", type: "nominal", width: 90 },
+                { label: "Mini Figures", field: "minifigs", type: "quantitative", width: 90 },
+                { label: "SubTheme", field: "subtheme", type: "nominal", width: 120 },
+                { label: "Theme Group", field: "themeGroup", type: "nominal", width: 120 },
+                { label: "Category", field: "category", type: "nominal", width: 90 }
+            ];
+
+           const headerRow = {
+                data: { values: [{}] },   // ← SINGLE dummy row so headers render once
+                hconcat: columns.map(col => ({
+                    width: col.width,
+                    mark: {
+                    type: "text",
+                    fontWeight: "bold",
+                    align: col.align || "center",
+                    fontSize : 15 
+                    },
+                    encoding: {
+                    y: { value: 10 },     // ← forces visible row height
+                    text: { value: col.label }
+                    }
+                }))
+                };
+
+                const dataRow = {
+                hconcat: columns.map(col => ({
+                    width: col.width,
+                    mark: {
+                        type: "text",
+                        align: col.align || "center",
+                        limit: col.width
+                    },
+                    encoding: {
+                    y: { field: "row", type: "ordinal", axis: null },
+                    text: { field: col.field, type: col.type },
+                    tooltip: { field: col.field, type: col.type }
+                    }
+                }))
+                };
+
+                const tableSpec = {
+                    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                    "background": "#f0f8ff",  // light blue background inside chart
+                    "data": { "url": "/data" },
+
+                    "params": [
+                        { "name": "Page", "value": 1 }
+                    ],
+
+                    "transform": [
+                        { "window": [{ "op": "row_number", "as": "row" }] },
+                        {
+                        "filter": "datum.row > (Page - 1) * 10 && datum.row <= Page * 10"
+                        }
+                    ],
+
+                    "vconcat": [
+                        headerRow,
+                        dataRow
+                    ],
+
+                    "spacing": 4
+            };
+
+       
+        let currentPage = 1;
+
+        function changePage(step) {
+        const select = document.getElementById("pageSelect");
+        const max = select.options.length;
+
+        currentPage = Math.max(1, Math.min(max, currentPage + step));
+        select.value = currentPage;
+        select.dispatchEvent(new Event("change"));
+        }
+        refreshPagination("/data");
+    </script>
+
+</body>
+</html>
