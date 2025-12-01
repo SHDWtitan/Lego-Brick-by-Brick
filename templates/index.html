@@ -41,9 +41,9 @@
         .pagination-bar {
             width: 100%;
             display: flex;
-            justify-content: center;   /* ✅ horizontal centering */
+            justify-content: center;   
             align-items: center;
-            gap: 10px;                 /* ✅ spacing between items */
+            gap: 10px;                 
             margin-top: 10px;
             margin-bottom: 20px;
             font-size: 18px;
@@ -326,7 +326,7 @@
             ];
 
            const headerRow = {
-                data: { values: [{}] },   // ← SINGLE dummy row so headers render once
+                data: { values: [{}] },   //   dummy row so headers render once
                 hconcat: columns.map(col => ({
                     width: col.width,
                     mark: {
@@ -336,7 +336,7 @@
                     fontSize : 15 
                     },
                     encoding: {
-                    y: { value: 10 },     // ← forces visible row height
+                    y: { value: 10 },     //forces visible row height
                     text: { value: col.label }
                     }
                 }))
