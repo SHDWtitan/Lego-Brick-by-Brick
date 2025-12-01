@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lego Brick by Brick</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1>Lego Brick by Brick</h1>
+        <h4>By Hunter Layfield, Katerina Garkova</h4>
+        <h4>Explore Lego sets by year, price, pieces, and themes</h4>
+    </div>
+
+    <div class="chart-container">
+        <div id="vis1" class="chart"></div>
+    </div>
+
+    <div class="filter-section">
+        <h2>🔍 Search Lego Sets</h2>
+        <div class="filter-grid">
+            <div class="filter-item">
+                <label>Theme:</label>
+                <select id="themeSelect"><option value="">All</option></select>
+            </div>
+            <div class="filter-item">
+                <label>Year:</label>
+                <select id="yearSelect"><option value="">All</option></select>
+            </div>
+            <div class="filter-item">
+                <label>Retail Price (US$):</label>
+                <select id="US_retailPriceSelect"><option value="">All</option></select>
+            </div>
+            <div class="filter-item">
+                <label>Sub-Theme:</label>
+                <select id="subthemeSelect"><option value="">All</option></select>
+            </div>
+            <div class="filter-item">
+                <label>Category:</label>
+                <select id="categorySelect"><option value="">All</option></select>
+            </div>
+            <div class="filter-item">
+                <label>Mini-Figures:</label>
+                <select id="minifigsSelect"><option value="">All</option></select>
+            </div>
+            <div class="filter-item">
+                <label>Theme Group:</label>
+                <select id="themeGroupSelect"><option value="">All</option></select>
+            </div>
+        </div>
+        <div class="button-container">
+            <button onclick="applyFilters()">🔎 Apply Filters</button>
+        </div>
+    </div>
+
+    <div class="data_table">
+        <div id="vis4" class="chart"></div>
+    </div>
+
+    <div class="pagination-bar">
+        <label>Page:</label>
+        <select id="pageSelect"></select>
+        <button onclick="changePage(-1)">← Prev</button>
+        <button onclick="changePage(1)">Next →</button>
+        <span id="matchCount">Total Sets: 0</span>
+    </div>
+
+    <div class="chart-container">
+        <div id="vis2" class="chart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="vis3" class="chart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="vis5" class="chart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="vis6" class="chart"></div>
+    </div>
+
+    <script>
+        function refreshPagination(url) {
+            currentDataURL = url;
+
+            fetch(url)
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementById("matchCount").textContent = `Total sets: ${data.length}`;
+
+                    const rowsPerPage = 10;
+                    const totalPages = Math.ceil(data.length / rowsPerPage);
+
+                    const pageSelect = document.getElementById("pageSelect");
+                    pageSelect.innerHTML = "";
+
+                    for (let i = 1; i <= totalPages; i++) {
+                        const opt = document.createElement("option");
+                        opt.value = i;
+                        opt.textContent = i;
+                        pageSelect.appendChild(opt);
+                    }
+
+                    vegaEmbed("#vis4", { ...tableSpec, data: { url } }).then(result => {
+                        const view = result.view;
+                        pageSelect.addEventListener("change", () => {
+                            view.signal("Page", Number(pageSelect.value)).run();
+                        });
+                    });
+                });
+        }
+
+        let fullData = [];
+
+        fetch("/data")
+            .then(r => r.json())
+            .then(data => {
+                fullData = data;
+
+                function populateDropdown(selectId, values, sortNumbers = false) {
+                    const select = document.getElementById(selectId);
+                    const sortedValues = sortNumbers ? [...values].sort((a,b) => a - b) : [...values].sort();
+                    sortedValues.forEach(v => {
+                        if (v !== null && v !== undefined && v !== "") {
+                            const opt = document.createElement("option");
+                            opt.value = v;
+                            opt.textContent = v;
+                            select.appendChild(opt);
+                        }
+                    });
+                }
+
+                populateDropdown("themeSelect", new Set(data.map(d => d.theme)));
+                populateDropdown("yearSelect", new Set(data.map(d => d.year)), true);
+                populateDropdown("subthemeSelect", new Set(data.map(d => d.subtheme)));
+                populateDropdown("categorySelect", new Set(data.map(d => d.category)));
+                populateDropdown("minifigsSelect", new Set(data.map(d => d.minifigs)), true);
+                populateDropdown("themeGroupSelect", new Set(data.map(d => d.themeGroup)));
+                populateDropdown("US_retailPriceSelect", new Set(data.map(d => d.US_retailPrice)), true);
+                populateDropdown("piecesSelect", new Set(data.map(d => d.pieces)), true);
+            });
+
+        function applyFilters() {
+            const theme = document.getElementById("themeSelect").value;
+            const year = document.getElementById("yearSelect").value;
+            const subtheme = document.getElementById("subthemeSelect").value;
+            const category = document.getElementById("categorySelect").value;
+            const pieces = document.getElementById("piecesSelect")?.value;
+            const minifigs = document.getElementById("minifigsSelect").value;
+            const themeGroup = document.getElementById("themeGroupSelect").value;
+            const US_retailPrice = document.getElementById("US_retailPriceSelect").value;
+
+            const params = new URLSearchParams();
+
+            if (theme) params.append("theme", theme);
+            if (year) params.append("year", year);
+            if (subtheme) params.append("subtheme", subtheme);
+            if (category) params.append("category", category);
+            if (pieces) params.append("pieces", pieces);
+            if (minifigs) params.append("minifigs", minifigs);
+            if (themeGroup) params.append("themeGroup", themeGroup);
+            if (US_retailPrice) params.append("US_retailPrice", US_retailPrice);
+
+            const url = "/data_filtered?" + params.toString() + "&_=" + Date.now();
+            refreshPagination(url);   
+        }
+
+        const lineSpec1 = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 500,
+            "height": 300,
+            "title": "Average Lego Set Price Over Time",
+            "transform": [
+                {
+                    "aggregate": [
+                        { "op": "mean", "field": "US_retailPrice", "as": "avg_price" }
+                    ],
+                    "groupby": ["year"]
+                }
+            ],
+            "mark": {"type": "line", "point": true, "color": "#e63946"},
+            "encoding": {
+                "x": { "field": "year", "type": "ordinal", "title": "Year" },
+                "y": { "field": "avg_price", "type": "quantitative", "title": "Average Price ($)" }
+            }
+        };
+        vegaEmbed('#vis1', lineSpec1);
+
+        const scatterSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 500,
+            "height": 300,
+            "title": "Lego Set Price vs Year",
+            "mark": {"type": "point", "filled": true, "opacity": 0.6},
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "quantitative",
+                    "scale": { "domain": [2000, 2016] },
+                    "title": "Year"
+                },
+                "y": { "field": "US_retailPrice", "type": "quantitative", "title": "Price ($)" },
+                "color": {"value": "#f77f00"},
+                "tooltip": [
+                    {"field": "name", "type":"nominal"},
+                    {"field": "year", "type":"quantitative"},
+                    {"field": "US_retailPrice", "type":"quantitative"}
+                ]
+            }
+        };
+        vegaEmbed('#vis2', scatterSpec);
+
+        const lineSpec2 = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 500,
+            "height": 300,
+            "title": "Number of Lego Sets Released per Year",
+            "transform": [
+                {
+                    "aggregate": [
+                        { "op": "count", "as": "sets_per_year" }
+                    ],
+                    "groupby": ["year"]
+                }
+            ],
+            "mark": {"type": "line", "point": true, "color": "#06d6a0"},
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "ordinal",
+                    "title": "Year"
+                },
+                "y": {
+                    "field": "sets_per_year",
+                    "type": "quantitative",
+                    "title": "Number of Sets Released"
+                }
+            }
+        };
+        vegaEmbed('#vis3', lineSpec2);
+
+        // Chart 4: Most Released Product Type by Theme (Top 10 Themes)
+        const themeProductSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 700,
+            "height": 400,
+            "title": "Most Released Product Type by Theme (Top 10 Themes)",
+            "transform": [
+                // Count products by theme and category
+                {
+                    "aggregate": [{ "op": "count", "as": "count" }],
+                    "groupby": ["theme", "category"]
+                },
+                // Find the most released category per theme
+                {
+                    "window": [{ "op": "rank", "as": "rank" }],
+                    "groupby": ["theme"],
+                    "sort": [{ "field": "count", "order": "descending" }]
+                },
+                { "filter": "datum.rank === 1" },
+                // Get top 10 themes by count
+                {
+                    "window": [{ "op": "rank", "as": "theme_rank" }],
+                    "sort": [{ "field": "count", "order": "descending" }]
+                },
+                { "filter": "datum.theme_rank <= 10" }
+            ],
+            "mark": { "type": "bar", "color": "#e63946" },
+            "encoding": {
+                "y": {
+                    "field": "theme",
+                    "type": "nominal",
+                    "title": "Theme",
+                    "sort": { "field": "count", "order": "descending" }
+                },
+                "x": {
+                    "field": "count",
+                    "type": "quantitative",
+                    "title": "Number of Sets Released"
+                },
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Product Type",
+                    "scale": { "scheme": "category20" }
+                },
+                "tooltip": [
+                    { "field": "theme", "type": "nominal", "title": "Theme" },
+                    { "field": "category", "type": "nominal", "title": "Product Type" },
+                    { "field": "count", "type": "quantitative", "title": "Sets Released" }
+                ]
+            }
+        };
+        vegaEmbed('#vis5', themeProductSpec);
+
+        // Chart 5: Most Released Product Type by SubTheme (Top 15 SubThemes)
+        const subthemeProductSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": { "url": "/data" },
+            "width": 700,
+            "height": 500,
+            "title": "Most Released Product Type by SubTheme (Top 15 SubThemes)",
+            "transform": [
+                // Filter out empty subthemes
+                { "filter": "datum.subtheme != null && datum.subtheme != ''" },
+                // Count products by subtheme and category
+                {
+                    "aggregate": [{ "op": "count", "as": "count" }],
+                    "groupby": ["subtheme", "category"]
+                },
+                // Find the most released category per subtheme
+                {
+                    "window": [{ "op": "rank", "as": "rank" }],
+                    "groupby": ["subtheme"],
+                    "sort": [{ "field": "count", "order": "descending" }]
+                },
+                { "filter": "datum.rank === 1" },
+                // Get top 15 subthemes by count
+                {
+                    "window": [{ "op": "rank", "as": "subtheme_rank" }],
+                    "sort": [{ "field": "count", "order": "descending" }]
+                },
+                { "filter": "datum.subtheme_rank <= 15" }
+            ],
+            "mark": { "type": "bar", "color": "#f77f00" },
+            "encoding": {
+                "y": {
+                    "field": "subtheme",
+                    "type": "nominal",
+                    "title": "SubTheme",
+                    "sort": { "field": "count", "order": "descending" }
+                },
+                "x": {
+                    "field": "count",
+                    "type": "quantitative",
+                    "title": "Number of Sets Released"
+                },
+                "color": {
+                    "field": "category",
+                    "type": "nominal",
+                    "title": "Product Type",
+                    "scale": { "scheme": "category20" }
+                },
+                "tooltip": [
+                    { "field": "subtheme", "type": "nominal", "title": "SubTheme" },
+                    { "field": "category", "type": "nominal", "title": "Product Type" },
+                    { "field": "count", "type": "quantitative", "title": "Sets Released" }
+                ]
+            }
+        };
+        vegaEmbed('#vis6', subthemeProductSpec);
+
+        const columns = [
+            { label: "Set Name", field: "name", type: "nominal", width: 300 },
+            { label: "Theme", field: "theme", type: "nominal", width: 120 },
+            { label: "Year", field: "year", type: "quantitative", width: 70 },
+            { label: "Pieces", field: "pieces", type: "quantitative", width: 80 },
+            { label: "Price ($)", field: "US_retailPrice", type: "quantitative", width: 90 },
+            { label: "Set ID", field: "set_id", type: "nominal", width: 90 },
+            { label: "Mini Figures", field: "minifigs", type: "quantitative", width: 90 },
+            { label: "SubTheme", field: "subtheme", type: "nominal", width: 120 },
+            { label: "Theme Group", field: "themeGroup", type: "nominal", width: 120 },
+            { label: "Category", field: "category", type: "nominal", width: 90 }
+        ];
+
+        const headerRow = {
+            data: { values: [{}] },
+            hconcat: columns.map(col => ({
+                width: col.width,
+                mark: {
+                    type: "text",
+                    fontWeight: "bold",
+                    align: col.align || "center",
+                    fontSize: 15
+                },
+                encoding: {
+                    y: { value: 10 },
+                    text: { value: col.label }
+                }
+            }))
+        };
+
+        const dataRow = {
+            hconcat: columns.map(col => ({
+                width: col.width,
+                mark: {
+                    type: "text",
+                    align: col.align || "center",
+                    limit: col.width
+                },
+                encoding: {
+                    y: { field: "row", type: "ordinal", axis: null },
+                    text: { field: col.field, type: col.type },
+                    tooltip: { field: col.field, type: col.type }
+                }
+            }))
+        };
+
+        const tableSpec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "background": "#f9f9f9",
+            "data": { "url": "/data" },
+            "params": [
+                { "name": "Page", "value": 1 }
+            ],
+            "transform": [
+                { "window": [{ "op": "row_number", "as": "row" }] },
+                {
+                    "filter": "datum.row > (Page - 1) * 10 && datum.row <= Page * 10"
+                }
+            ],
+            "vconcat": [
+                headerRow,
+                dataRow
+            ],
+            "spacing": 4
+        };
+
+        let currentPage = 1;
+
+        function changePage(step) {
+            const select = document.getElementById("pageSelect");
+            const max = select.options.length;
+            currentPage = Math.max(1, Math.min(max, currentPage + step));
+            select.value = currentPage;
+            select.dispatchEvent(new Event("change"));
+        }
+        
+        refreshPagination("/data");
+    </script>
+</body>
+</html>
