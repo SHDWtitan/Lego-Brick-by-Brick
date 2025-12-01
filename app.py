@@ -30,8 +30,8 @@ def data():
 
 @app.route("/data_filtered")
 def data_filtered():
-    filtered_df = df.copy()   # ✅ FIX: use your REAL dataframe
-
+    filtered_df = df.copy()   
+    
     theme = request.args.get("theme")
     year = request.args.get("year")
     subtheme = request.args.get("subtheme")
