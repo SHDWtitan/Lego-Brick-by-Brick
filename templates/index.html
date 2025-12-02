@@ -1,3 +1,4 @@
+Hunter Layfield, Katerina Garkova, Colin Briggs, and Robert Law
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,70 +6,14 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-    <style>
-        /* Center charts */
-        .chart-container {
-            text-align: center;   
-            margin-top: 20px;     
-        }
-
-        .chart {
-            display: block; 
-            text-align: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        /* Preview table */
-        #preview {
-            margin: 20px auto;
-            width: 80%;
-            text-align: left;
-            font-family: monospace;
-        }
-    </style>
-    <style>
-        .data_table {
-            font-family: monospace;
-            line-height: 1.2;       
-            letter-spacing: 1px;    
-            margin: 20px auto;
-            text-align: center;
-            justify-content: center;
-        }
-        .pagination-bar {
-            width: 100%;
-            display: flex;
-            justify-content: center;   /* ✅ horizontal centering */
-            align-items: center;
-            gap: 10px;                 /* ✅ spacing between items */
-            margin-top: 10px;
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-    </style>
-=======
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
->>>>>>> Stashed changes
-=======
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
->>>>>>> Stashed changes
-=======
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
->>>>>>> Stashed changes
 </head>
 
 <body>
     <div class="header">
         <h1>Lego Brick by Brick</h1>
-        <h4>By Hunter Layfield, Katerina Garkova, Colin Briggs, and Robert Law</h4>
+        <h4>By Hunter Layfield, Katerina Garkova</h4>
         <h4>Explore Lego sets by year, price, pieces, and themes</h4>
     </div>
 
@@ -109,7 +54,7 @@
             </div>
         </div>
         <div class="button-container">
-            <button onclick="applyFilters()">Apply Filters</button>
+            <button onclick="applyFilters()">🔎 Apply Filters</button>
         </div>
     </div>
 
@@ -134,8 +79,8 @@
     </div>
 
     <div class="section-divider">
-        <h2>Themes & SubThemes</h2>
-        <p>This classification helps us understand which categories dominate LEGO's catalog and reveals how the company organizes its vast portfolio to appeal to different customer segments and interests.</p>
+        <h2>LEGO Themes & SubThemes</h2>
+        <p>LEGO themes and subthemes helps us understand which categories dominate LEGO's catalog, and reveals how the company organizes its vast portfolio to appeal to different customer segments and interests.</p>
     </div>
 
     <div class="chart-container">
@@ -309,7 +254,7 @@
         };
         vegaEmbed('#vis3', lineSpec2);
 
-        // Chart 4: Most Released Product Type by Theme
+        // Chart 4: Most Released Product Type by Theme (Interactive with Histogram)
         const themeProductSpec = {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "data": { "url": "/data" },
@@ -317,7 +262,7 @@
                 {
                     "width": 1000,
                     "height": 100,
-                    "title": "Most Released Product Type by Theme",
+                    "title": "Product Type by Theme",
                     "mark": "bar",
                     "params": [
                         {
@@ -355,7 +300,7 @@
                 {
                     "width": 1000,
                     "height": 400,
-                    "title": "Product Types by Theme - Filtered by Selection Above",
+                    "title": "Product Types by Theme",
                     "mark": { "type": "circle", "size": 100, "opacity": 0.7 },
                     "transform": [
                         { "filter": { "param": "theme_brush" } },
@@ -401,7 +346,7 @@
                 {
                     "width": 700,
                     "height": 100,
-                    "title": "Most Released Product Type by SubTheme",
+                    "title": "Product Type by SubTheme",
                     "mark": "bar",
                     "params": [
                         {
@@ -440,7 +385,7 @@
                 {
                     "width": 700,
                     "height": 400,
-                    "title": "Product Types by SubTheme - Filtered by Selection Above",
+                    "title": "Product Types by SubTheme",
                     "mark": { "type": "circle", "opacity": 0.7 },
                     "transform": [
                         { "filter": "datum.subtheme != null && datum.subtheme != ''" },
@@ -490,54 +435,6 @@
         };
         vegaEmbed('#vis6', subthemeProductSpec);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-           const headerRow = {
-                data: { values: [{}] },   // ← SINGLE dummy row so headers render once
-                hconcat: columns.map(col => ({
-                    width: col.width,
-                    mark: {
-                    type: "text",
-                    fontWeight: "bold",
-                    align: col.align || "center",
-                    fontSize : 15 
-                    },
-                    encoding: {
-                    y: { value: 10 },     // ← forces visible row height
-=======
-        const columns = [
-            { label: "Set Name", field: "name", type: "nominal", width: 300 },
-            { label: "Theme", field: "theme", type: "nominal", width: 120 },
-            { label: "Year", field: "year", type: "quantitative", width: 70 },
-            { label: "Pieces", field: "pieces", type: "quantitative", width: 80 },
-            { label: "Price ($)", field: "US_retailPrice", type: "quantitative", width: 90 },
-            { label: "Set ID", field: "set_id", type: "nominal", width: 90 },
-            { label: "Mini Figures", field: "minifigs", type: "quantitative", width: 90 },
-            { label: "SubTheme", field: "subtheme", type: "nominal", width: 120 },
-            { label: "Theme Group", field: "themeGroup", type: "nominal", width: 120 },
-            { label: "Category", field: "category", type: "nominal", width: 90 }
-        ];
-
-        const headerRow = {
-            data: { values: [{}] },
-            hconcat: columns.map(col => ({
-                width: col.width,
-                mark: {
-                    type: "text",
-                    fontWeight: "bold",
-                    align: col.align || "center",
-                    fontSize: 15
-                },
-                encoding: {
-                    y: { value: 10 },
->>>>>>> Stashed changes
-                    text: { value: col.label }
-                }
-            }))
-        };
-
-=======
         const columns = [
             { label: "Set Name", field: "name", type: "nominal", width: 300 },
             { label: "Theme", field: "theme", type: "nominal", width: 120 },
@@ -568,39 +465,6 @@
             }))
         };
 
->>>>>>> Stashed changes
-=======
-        const columns = [
-            { label: "Set Name", field: "name", type: "nominal", width: 300 },
-            { label: "Theme", field: "theme", type: "nominal", width: 120 },
-            { label: "Year", field: "year", type: "quantitative", width: 70 },
-            { label: "Pieces", field: "pieces", type: "quantitative", width: 80 },
-            { label: "Price ($)", field: "US_retailPrice", type: "quantitative", width: 90 },
-            { label: "Set ID", field: "set_id", type: "nominal", width: 90 },
-            { label: "Mini Figures", field: "minifigs", type: "quantitative", width: 90 },
-            { label: "SubTheme", field: "subtheme", type: "nominal", width: 120 },
-            { label: "Theme Group", field: "themeGroup", type: "nominal", width: 120 },
-            { label: "Category", field: "category", type: "nominal", width: 90 }
-        ];
-
-        const headerRow = {
-            data: { values: [{}] },
-            hconcat: columns.map(col => ({
-                width: col.width,
-                mark: {
-                    type: "text",
-                    fontWeight: "bold",
-                    align: col.align || "center",
-                    fontSize: 15
-                },
-                encoding: {
-                    y: { value: 10 },
-                    text: { value: col.label }
-                }
-            }))
-        };
-
->>>>>>> Stashed changes
         const dataRow = {
             hconcat: columns.map(col => ({
                 width: col.width,

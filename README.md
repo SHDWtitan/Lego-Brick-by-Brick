@@ -2,10 +2,7 @@
 This Repo is for hosting the base files and Python code for the Data Science Programming Final project.
 
 # How to run your notebook or dashboard
-Our website is hosted on:
-https://shdwtitan.github.io/Lego-Brick-by-Brick/
-
-Since all of our files are public on GitHub, there is no installation required.
+Feel free to download our repo and run our project by running the app.py file.
 
 # Dataset sources
 Links to original data source:
@@ -21,7 +18,7 @@ https://raw.githubusercontent.com/SHDWtitan/COP4282_DSP_Final_Project_FALL2025/r
 
 
 # Folder/File Structure
-
+Our app runs from the app.py file. It uses index.html and styles.css to create a user friendly web page through Flask.
 
 # Contributors
 Colin Briggs

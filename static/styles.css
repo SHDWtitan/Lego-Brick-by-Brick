@@ -1,4 +1,4 @@
- * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -184,7 +184,7 @@ button:active {
 }
 
 /* Responsive adjustments */
-@media (max-width: 2000px) {
+@media (max-width: 768px) {
     .header h1 {
         font-size: 2em;
     }
@@ -196,4 +196,31 @@ button:active {
     .chart-container {
         padding: 15px;
     }
+}
+
+/* Section Divider */
+.section-divider {
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe0b2 100%);
+    border-left: 5px solid #f77f00;
+    border-radius: 15px;
+    padding: 30px 40px;
+    margin: 50px auto;
+    max-width: 1200px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.section-divider h2 {
+    color: #e63946;
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.section-divider p {
+    color: #555;
+    font-size: 1.1em;
+    line-height: 1.8;
+    text-align: justify;
+    margin: 0;
 }
