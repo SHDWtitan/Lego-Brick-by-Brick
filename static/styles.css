@@ -1,0 +1,199 @@
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ebffec 0%, #d7fdd9 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+/* Header Styling */
+.header {
+    background: linear-gradient(135deg, #e63946 0%, #f77f00 50%, #fcbf49 100%);
+    color: white;
+    padding: 40px 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header h4 {
+    font-size: 1.2em;
+    font-weight: 300;
+    opacity: 0.95;
+}
+
+/* Chart Container Styling */
+.chart-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 1200px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Filter Section */
+.filter-section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 1200px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.filter-section h2 {
+    color: #e63946;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-item label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.filter-item select {
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95em;
+    transition: border-color 0.3s ease;
+    background: white;
+}
+
+.filter-item select:focus {
+    outline: none;
+    border-color: #e63946;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+    background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+    margin: 0 5px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Table Section */
+.data_table {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 1400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Pagination Bar */
+.pagination-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    font-size: 1em;
+}
+
+.pagination-bar label {
+    font-weight: 600;
+    color: #555;
+}
+
+.pagination-bar select {
+    padding: 8px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    background: white;
+}
+
+#matchCount {
+    background: #e63946;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 2000px) {
+    .header h1 {
+        font-size: 2em;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+        padding: 15px;
+    }
+}
