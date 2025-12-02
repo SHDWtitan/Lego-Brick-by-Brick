@@ -1,0 +1,18 @@
+{
+  "config": {"view": {"continuousWidth": 300, "continuousHeight": 300}},
+  "data": {
+    "url": "https://raw.githubusercontent.com/SHDWtitan/Lego-Brick-by-Brick/refs/heads/Hunter_Layfield/data/lego_cleaned.csv"
+  },
+  "mark": {"type": "bar", "tooltip": true},
+  "description": "LEGO sets themes ",
+  "encoding": {
+    "color": {"field": "theme", "type": "nominal"},
+    "x": {"field": "theme", "type": "nominal"},
+    "y": {
+      "aggregate": "max",
+      "field": "pieces",
+      "title": "Largest set (number of pieces)"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json"
+}

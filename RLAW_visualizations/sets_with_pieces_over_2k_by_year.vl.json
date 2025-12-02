@@ -1,0 +1,19 @@
+{
+  "config": {"view": {"continuousWidth": 300, "continuousHeight": 300}},
+  "data": {
+    "url": "https://raw.githubusercontent.com/SHDWtitan/Lego-Brick-by-Brick/refs/heads/Hunter_Layfield/data/lego_cleaned.csv"
+  },
+  "mark": {"type": "point", "tooltip": {"content": "data"}},
+  "description": "LEGO sets with at least 1500 pieces by year",
+  "encoding": {
+    "color": {"field": "theme", "type": "nominal"},
+    "x": {"field": "year", "type": "ordinal"},
+    "y": {
+      "field": "pieces",
+      "type": "quantitative",
+      "title": "number of pieces"
+    }
+  },
+  "transform": [{"filter": "datum.pieces > 1500"}],
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json"
+}
