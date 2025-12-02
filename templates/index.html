@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     <style>
         /* Center charts */
@@ -50,6 +51,10 @@
             font-size: 18px;
         }
     </style>
+=======
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+>>>>>>> Stashed changes
 =======
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
@@ -487,6 +492,7 @@
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
            const headerRow = {
                 data: { values: [{}] },   // ← SINGLE dummy row so headers render once
                 hconcat: columns.map(col => ({
@@ -531,6 +537,38 @@
             }))
         };
 
+=======
+        const columns = [
+            { label: "Set Name", field: "name", type: "nominal", width: 300 },
+            { label: "Theme", field: "theme", type: "nominal", width: 120 },
+            { label: "Year", field: "year", type: "quantitative", width: 70 },
+            { label: "Pieces", field: "pieces", type: "quantitative", width: 80 },
+            { label: "Price ($)", field: "US_retailPrice", type: "quantitative", width: 90 },
+            { label: "Set ID", field: "set_id", type: "nominal", width: 90 },
+            { label: "Mini Figures", field: "minifigs", type: "quantitative", width: 90 },
+            { label: "SubTheme", field: "subtheme", type: "nominal", width: 120 },
+            { label: "Theme Group", field: "themeGroup", type: "nominal", width: 120 },
+            { label: "Category", field: "category", type: "nominal", width: 90 }
+        ];
+
+        const headerRow = {
+            data: { values: [{}] },
+            hconcat: columns.map(col => ({
+                width: col.width,
+                mark: {
+                    type: "text",
+                    fontWeight: "bold",
+                    align: col.align || "center",
+                    fontSize: 15
+                },
+                encoding: {
+                    y: { value: 10 },
+                    text: { value: col.label }
+                }
+            }))
+        };
+
+>>>>>>> Stashed changes
 =======
         const columns = [
             { label: "Set Name", field: "name", type: "nominal", width: 300 },
